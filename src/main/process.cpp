@@ -5,7 +5,7 @@
 
 Process::Process() {
     mCmd = "";
-    mEmpty = true;
+    mIsOpen = false;
 }
 
 Process::~Process() {
@@ -17,12 +17,13 @@ void Process::close() {
     CloseHandle(mProcInfo.hThread);
     CloseHandle(mChildOutWr);
     CloseHandle(mChildInRd);
+    mIsOpen = false;
 }
 
 // TODO: cmd by reference
 bool Process::start(std::string cmd) {
+    if (cmd.length() == 0) return false;
     mCmd = cmd;
-    mEmpty = false;
     SECURITY_ATTRIBUTES saAttr;
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
@@ -30,18 +31,22 @@ bool Process::start(std::string cmd) {
     
     if (!CreatePipe(&mChildOutRd, &mChildOutWr, &saAttr, 0)) {
         std::cout << "CreatePipe for stdout failed" << std::endl;
+        close();
         return false;
     }
     if (!SetHandleInformation(mChildOutRd, HANDLE_FLAG_INHERIT, 0)) {
         std::cout << "SetHandleInformation for stdout failed" << std::endl;
+        close();
         return false;
     }
     if (!CreatePipe(&mChildInRd, &mChildInWr, &saAttr, 0)) {
         std::cout << "CreatePipe for stdin failed" << std::endl;
+        close();
         return false;
     }
     if (!SetHandleInformation(mChildInWr, HANDLE_FLAG_INHERIT, 0)) {
         std::cout << "SetHandleInformation for stdin failed" << std::endl;
+        close();
         return false;
     }
     
@@ -72,8 +77,11 @@ bool Process::start(std::string cmd) {
     
     if (!success) {
         std::cout << "CreateProcess failed" << std::endl;
+        close();
         return false;
     }
+    
+    mIsOpen = true;
     
     return true;
 }
@@ -112,9 +120,13 @@ bool Process::read(std::string& buf) {
 // TODO: GetExitCodeProcess is not sufficient for
 // determining if the process is actually dead or not.
 // (Process can return 259 as exit code).
-bool Process::alive() {
+bool Process::isAlive() const {
     if (mCmd.length() == 0) return false;
     DWORD status;
     if (!GetExitCodeProcess(mProcInfo.hProcess, &status)) return false;
     return status == STILL_ACTIVE;
+}
+
+bool Process::isOpen() const {
+    return mIsOpen;
 }

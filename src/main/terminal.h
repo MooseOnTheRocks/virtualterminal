@@ -21,6 +21,11 @@ public:
     void next(char c);
     void write(char c);
     
+    // void setCursorXY(int x, int y);
+    
+    // int getCursorX() const;
+    // int getCursorY() const;
+    
 private:
     // State
     Shell mShell;

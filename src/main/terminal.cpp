@@ -116,10 +116,21 @@ void Terminal::write(char c) {
         return;
     }
     switch (c) {
+        case '\x0C': {
+            for (int i = 0; i < mColumnCount * mRowCount; i++) {
+                mBuffer[i] = ' ';
+            }
+            mCursorPos = 0;
+            break;
+        }
         case '\n': {
             mBuffer[mCursorPos] = c;
             mCursorPos = (mCursorPos / mColumnCount) * mColumnCount;
             mCursorPos += mColumnCount;
+            break;
+        }
+        case '\x08': {
+            mBuffer[--mCursorPos] = ' ';
             break;
         }
         default: mBuffer[mCursorPos++] = c;
@@ -178,6 +189,7 @@ bool Terminal::mUpdate() {
             case SDL_KEYDOWN: {
                 int scancode = event.key.keysym.scancode;
                 switch (scancode) {
+                    case SDL_SCANCODE_BACKSPACE: { mShell.write(std::string{'\x08'}); break; }
                     case SDL_SCANCODE_PERIOD: { mShell.write(std::string{'.'}); break; }
                     case SDL_SCANCODE_MINUS: { mShell.write(std::string{'-'}); break; }
                     case SDL_SCANCODE_EQUALS: { mShell.write(std::string{'='}); break; }
@@ -218,6 +230,7 @@ bool Terminal::mUpdate() {
     std::string s;
     if (mShell.read(s)) {
         for (int i = 0; i < s.length(); i++) {
+            std::cout << "read: " << ((int) s[i]) << std::endl;
             next(s[i]);
         }
     }
@@ -256,5 +269,19 @@ void Terminal::mRender() {
         SDL_RenderPresent(mRenderer);
     }
 }
+
+// void Terminal::setCursorXY(int x, int y) {
+    // int cx = x < 1 ? 1 : (x - 1) % mColumnCount;
+    // int cy = y < 1 ? 1 : (y - 1) % mRowCount; 
+    // mCursorPos = cx + cy * mColumnCount;
+// }
+
+// int Terminal::getCursorX() const {
+    // return mCursorPos % mColumnCount + 1;
+// }
+
+// int Terminal::getCursorY() const {
+    // return mCursorPos / mColumnCount + 1;
+// }
 
 } // namespace Terminal

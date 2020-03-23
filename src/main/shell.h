@@ -6,7 +6,7 @@
 class Shell {
 public:
     Shell();
-    ~Shell() = default;
+    ~Shell();
     
     bool write(const std::string& s);
     bool read(std::string& buf);
@@ -14,7 +14,6 @@ public:
 private:
     std::string mCmd;
     std::string mCmdDif;
-    bool mShouldPrompt;
     Process mProc;
 };
 

@@ -13,11 +13,12 @@ public:
     bool start(std::string cmd);
     bool write(const std::string& s);
     bool read(std::string& buf);
-    bool alive();
+    bool isAlive() const;
+    bool isOpen() const;
     
 private:
+    bool mIsOpen;
     std::string mCmd;
-    bool mEmpty;
     PROCESS_INFORMATION mProcInfo;
     STARTUPINFO mStartupInfo;
     HANDLE mChildInRd;
