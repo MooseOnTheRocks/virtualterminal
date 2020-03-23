@@ -1,0 +1,19 @@
+== Virtual Terminal ==
+This is a virtual terminal.
+I want to be able to run programs from this.
+I want to be able to simulate VTXXX with this.
+I want this to be fast (and customizable).
+
+-- Definition --
+A virtual terminal is a program that accepts user input and dispatches commands from the user to the OS (e.g. run a program).
+This terminal should support:
+    fore/background colors,
+    a cursor,
+    VT100 (at least) escape sequences (see https://en.wikipedia.org/wiki/ANSI_escape_code#Escape_sequences),
+    command line interfaces (CLI) and text user interfaces (TUI),
+    local echo & local editing.
+
+-- Specification --
+When processing program output, check for an escape sequence and process it as such (not as text).
+    Big ol' switch statement maybe?
+    Probably various ifs, kind of like a sieve.

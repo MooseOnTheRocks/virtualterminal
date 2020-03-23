@@ -1,0 +1,4 @@
+*.exe
+*.obj
+cl-help.txt
+test.txt
