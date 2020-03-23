@@ -178,36 +178,32 @@ bool Terminal::mUpdate() {
             case SDL_KEYDOWN: {
                 int scancode = event.key.keysym.scancode;
                 switch (scancode) {
-                    case SDL_SCANCODE_PERIOD: {
-                        mShell.write(std::string{'.'});
-                        break;
-                    }
-                    case SDL_SCANCODE_MINUS: {
-                        mShell.write(std::string{'-'});
-                        break;
-                    }
-                    case SDL_SCANCODE_APOSTROPHE: {
-                        mShell.write(std::string{'\''});
-                        break;
-                    }
-                    case SDL_SCANCODE_COMMA: {
-                        mShell.write(std::string{','});
-                        break;
-                    }
-                    case SDL_SCANCODE_SPACE: {
-                        mShell.write(std::string{' '});
-                        break;
-                    }
-                    case SDL_SCANCODE_RETURN: {
-                        mShell.write(std::string{'\n'});
-                        break;
-                    }
+                    case SDL_SCANCODE_PERIOD: { mShell.write(std::string{'.'}); break; }
+                    case SDL_SCANCODE_MINUS: { mShell.write(std::string{'-'}); break; }
+                    case SDL_SCANCODE_EQUALS: { mShell.write(std::string{'='}); break; }
+                    case SDL_SCANCODE_SEMICOLON: {mShell.write(std::string{';'}); break; }
+                    case SDL_SCANCODE_GRAVE: { mShell.write(std::string{'`'}); break; }
+                    case SDL_SCANCODE_LEFTBRACKET: { mShell.write(std::string{'['}); break; }
+                    case SDL_SCANCODE_RIGHTBRACKET: { mShell.write(std::string{']'}); break; }
+                    case SDL_SCANCODE_APOSTROPHE: { mShell.write(std::string{'\''}); break; }
+                    case SDL_SCANCODE_BACKSLASH: { mShell.write(std::string{'\\'}); break; }
+                    case SDL_SCANCODE_SLASH: { mShell.write(std::string{'/'}); break; }
+                    case SDL_SCANCODE_COMMA: { mShell.write(std::string{','}); break; }
+                    case SDL_SCANCODE_SPACE: { mShell.write(std::string{' '}); break; }
+                    case SDL_SCANCODE_RETURN: { mShell.write(std::string{'\n'}); break; }
+                    case SDL_SCANCODE_0: { mShell.write(std::string{'0'}); break; }
+                    case SDL_SCANCODE_1: { mShell.write(std::string{'1'}); break; }
+                    case SDL_SCANCODE_2: { mShell.write(std::string{'2'}); break; }
+                    case SDL_SCANCODE_3: { mShell.write(std::string{'3'}); break; }
+                    case SDL_SCANCODE_4: { mShell.write(std::string{'4'}); break; }
+                    case SDL_SCANCODE_5: { mShell.write(std::string{'5'}); break; }
+                    case SDL_SCANCODE_6: { mShell.write(std::string{'6'}); break; }
+                    case SDL_SCANCODE_7: { mShell.write(std::string{'7'}); break; }
+                    case SDL_SCANCODE_8: { mShell.write(std::string{'8'}); break; }
+                    case SDL_SCANCODE_9: { mShell.write(std::string{'9'}); break; }
                     default: {
                         if (scancode >= SDL_SCANCODE_A && scancode <= SDL_SCANCODE_Z) {
                             mShell.write(std::string{(char) (scancode - SDL_SCANCODE_A + 'a')});
-                        }
-                        else if (scancode >= SDL_SCANCODE_0 && scancode <= SDL_SCANCODE_9) {
-                            mShell.write(std::string{(char) (scancode - SDL_SCANCODE_0 + '0')});
                         }
                     }
                 }

@@ -18,7 +18,6 @@ bool Shell::write(const std::string& s) {
             mCmdDif = "\n";
         }
         else {
-            if (mCmdDif[0] == '\n') mCmdDif = "";
             mCmd += s;
             mCmdDif += s;
         }
@@ -31,8 +30,12 @@ bool Shell::read(std::string& buf) {
     if (success && buf.length() > 0) {
         return true;
     }
+    else if (mProc.alive()) {
+        buf.assign("");
+        return true;
+    }
     else {
-        buf = "";
+        buf.assign("");
         if (mCmdDif.length() > 0) {
             buf.assign(mCmdDif);
             mCmdDif = "";

@@ -14,6 +14,7 @@ public:
 private:
     std::string mCmd;
     std::string mCmdDif;
+    bool mShouldPrompt;
     Process mProc;
 };
 
